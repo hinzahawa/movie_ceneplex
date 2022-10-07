@@ -1,9 +1,11 @@
 import express from "express";
 // const express = require("express");
 const router = express.Router();
+const MoviesManager = require("../../manager/movies");
 
 async function get(req: any, res: any): Promise<any> {
-  return res.json({ message: "test" });
+  const data = await MoviesManager.findAll();
+  return res.json({ data });
 }
 
 router.get("/", get);

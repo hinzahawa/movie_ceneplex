@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const helmet = require("helmet");
 
+const connnect_db = require("./src/connnect_db");
 const authorization = require("./src/middleware/authorization");
 const movies = require("./src/route/movies");
 dotenv.config();
