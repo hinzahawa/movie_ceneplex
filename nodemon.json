@@ -1,5 +1,5 @@
 {
-  "watch": ["app", "./src"],
+  "watch": ["app.ts", "./src"],
   "ext": ".ts,.js",
   "ignore": [],
   "exec": "ts-node app.ts ./src"
