@@ -6,7 +6,7 @@ const configApp: any = {
     DATABASE: "movies_ceneplex",
     DB_USERNAME: "root",
     DB_PASSWORD: "",
-    PRIVATE_KEY: "O5rd7VNsENJ5u5UFABvZ",
+    SECRET_KEY: "O5rd7VNsENJ5u5UFABvZ",
   },
 };
 
