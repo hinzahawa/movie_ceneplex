@@ -8,6 +8,7 @@ const Movies = sequelize.define("movies", {
   duration_min: { type: DataTypes.NUMBER },
   director: { type: DataTypes.STRING },
   img_uri: { type: DataTypes.STRING },
+  genre: { type: DataTypes.NUMBER },
 });
 
 // console.log(Movies === sequelize.models.movies); // true
