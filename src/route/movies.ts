@@ -1,12 +1,16 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 const MoviesModel = require("../models/movies");
+const GenreModel = require("../models/genre");
 const querySerializer = require("../manager/query_serializer");
 
 async function getData(req: any, res: any): Promise<any> {
   const query: any = querySerializer(req.query);
   try {
-    const data = await MoviesModel.findAll(query);
+    let data = await MoviesModel.findAll({
+      include: { model: GenreModel, required: true, attributes: ["name"] },
+      ...query,
+    });
     return res.json(data);
   } catch (error) {
     throw error;
