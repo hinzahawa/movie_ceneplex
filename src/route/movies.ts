@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 const MoviesModel = require("../models/movies");
-const GenreModel = require("../models/genre");
+const GenreModel = require("../models/genres");
 const querySerializer = require("../manager/query_serializer");
 
 async function getData(req: any, res: any): Promise<any> {
@@ -21,7 +21,7 @@ async function createData(req: any, res: any): Promise<any> {
   const reqCreate = req.body;
   try {
     const create = await MoviesModel.create(reqCreate);
-    return res.status(201).json(create);
+    return res.status(201).json({ message: "created successfully." });
   } catch (error) {
     throw error;
   }

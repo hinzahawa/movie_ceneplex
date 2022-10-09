@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 const sequelize = require("../manager/sequelize");
-const GenreModel = require("../models/genre");
+const GenreModel = require("../models/genres");
 
 const Movies = sequelize.define("movies", {
   //   id: { type: DataTypes.UUID, allowNull: false, unique: true },

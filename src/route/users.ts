@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-const UserModel = require("../models/user");
+const UserModel = require("../models/users");
 const querySerializer = require("../manager/query_serializer");
 const { SECRET_KEY } = require("../../config");
 const jwt = require("jsonwebtoken");
@@ -18,7 +18,7 @@ async function login(req: any, res: any): Promise<any> {
       const userData = isExistUser.toJSON();
       const token = await jwt.sign(userData, SECRET_KEY, {
         algorithm: "HS256",
-        expiresIn: "24hr",
+        expiresIn: "24h",
       });
       return res.json({ message: "login successfully.", token });
     } else
