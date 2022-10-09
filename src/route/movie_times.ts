@@ -23,7 +23,7 @@ async function movieShowing(req: any, res: any): Promise<any> {
           [Op.between]: [startDate, endDate],
         },
       },
-      attributes: { exclude: ["createdAt", "updatedAt"] },
+      attributes: ["id","start_time"],
       include: [
         {
           model: MovieModel,
