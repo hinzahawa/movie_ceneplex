@@ -3,8 +3,9 @@ const router = express.Router();
 const MovieTimeModel = require("../models/movie_times");
 const MovieModel = require("../models/movies");
 const TheaterModel = require("../models/theaters");
-const querySerializer = require("../manager/query_serializer");
 const GenreModel = require("../models/genres");
+const SeatModel = require("../models/seats");
+// const querySerializer = require("../manager/query_serializer");
 import { Op } from "sequelize";
 
 async function movieShowing(req: any, res: any): Promise<any> {
@@ -35,6 +36,11 @@ async function movieShowing(req: any, res: any): Promise<any> {
           required: true,
           attributes: { exclude: ["createdAt", "updatedAt"] },
         },
+        {
+          model: SeatModel,
+          required: true,
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+        },
       ],
     });
     return res.json(data);
@@ -46,6 +52,7 @@ async function movieShowing(req: any, res: any): Promise<any> {
 async function createMoviesTime(req: any, res: any): Promise<any> {
   const { movie_id, theater_id, start_time }: any = req.body;
   try {
+    // res.json(seat_list);
     if (movie_id > 0 && theater_id > 0 && start_time) {
       const isTheaterExists = await TheaterModel.findByPk(theater_id, {
         attributes: ["id"],
@@ -54,10 +61,16 @@ async function createMoviesTime(req: any, res: any): Promise<any> {
         attributes: ["id"],
       });
       if (isTheaterExists && isMovieExists) {
+        let seat_list: any = [];
+        for (let index = 1; index <= 30; index++) {
+          seat_list.push({ seat_no: index, price: 200, active: false });
+        }
+        const { id } = await SeatModel.create({ seat_list });
         const createData = {
           movie_id,
           theater_id,
           start_time: new Date(start_time),
+          seat_id: id,
         };
         await MovieTimeModel.create(createData);
         return res.status(201).json({ message: "created successfully." });
