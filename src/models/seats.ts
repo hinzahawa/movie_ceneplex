@@ -7,13 +7,17 @@ const Seat = sequelize.define("seats", {
   // price: { type: DataTypes.NUMBER },
   seat_list: {
     type: DataTypes.JSON,
-    get(this: Model): [] {
+    get(this: Model): any {
       const seat_list: string = this.getDataValue("seat_list");
-      return JSON.parse(seat_list);
+      try {
+        return JSON.parse(seat_list);
+      } catch (error) {
+        return seat_list;
+      }
     },
-    // set(this: Model): any {
-    //   this.setDataValue("seat_list", val.join(";"));
-    // },
+    set(this: Model, value: Model): any {
+      this.setDataValue("seat_list", value);
+    },
   },
 });
 

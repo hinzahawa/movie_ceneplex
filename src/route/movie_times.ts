@@ -9,7 +9,11 @@ const SeatModel = require("../models/seats");
 import { Op } from "sequelize";
 
 async function movieShowing(req: any, res: any): Promise<any> {
-  const { startime, endtime }: any = req.query;
+  const {
+    movie_id,
+    startime,
+    endtime,
+  }: { movie_id: number; startime: string; endtime: string } = req.query;
   try {
     let startDate = new Date(new Date().setHours(0, 0, 0, 0));
     let endDate = new Date(new Date().setHours(23, 59, 59, 999));
@@ -17,13 +21,13 @@ async function movieShowing(req: any, res: any): Promise<any> {
       startDate = new Date(startime);
       endDate = new Date(endtime);
     }
-    let data = await MovieTimeModel.findAll({
+    let query: any = {
       where: {
         start_time: {
           [Op.between]: [startDate, endDate],
         },
       },
-      attributes: ["id","start_time"],
+      attributes: ["id", "start_time"],
       include: [
         {
           model: MovieModel,
@@ -42,7 +46,10 @@ async function movieShowing(req: any, res: any): Promise<any> {
           attributes: { exclude: ["createdAt", "updatedAt"] },
         },
       ],
-    });
+    };
+    if (movie_id > 0)
+      query.where = { movie_id: parseInt(movie_id.toString()), ...query.where };
+    let data = await MovieTimeModel.findAll(query);
     return res.json(data);
   } catch (error) {
     throw error;
@@ -50,7 +57,11 @@ async function movieShowing(req: any, res: any): Promise<any> {
 }
 
 async function createMoviesTime(req: any, res: any): Promise<any> {
-  const { movie_id, theater_id, start_time }: any = req.body;
+  const {
+    movie_id,
+    theater_id,
+    start_time,
+  }: { movie_id: number; theater_id: number; start_time: string } = req.body;
   try {
     // res.json(seat_list);
     if (movie_id > 0 && theater_id > 0 && start_time) {
@@ -74,7 +85,6 @@ async function createMoviesTime(req: any, res: any): Promise<any> {
         };
         await MovieTimeModel.create(createData);
         return res.status(201).json({ message: "created successfully." });
-        // } else return res.status(422).json({ message: "created failed." });
       }
       return res.status(400).json({ message: "created failed." });
     } else return res.status(400).json({ message: "request error" });

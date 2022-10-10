@@ -22,7 +22,7 @@ async function login(req: any, res: any): Promise<any> {
       });
       return res.json({ message: "login successfully.", token });
     } else
-      return res.status(404).json({ message: "username or password invalid!" });
+      return res.status(400).json({ message: "username or password invalid!" });
   } catch (error) {
     throw error;
   }
