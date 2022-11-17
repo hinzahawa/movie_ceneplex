@@ -1,3 +1,5 @@
+import { Op } from "sequelize";
+
 module.exports = (reqQuery: any): any => {
   let query: any = {};
   if (Object.keys(reqQuery).length > 0) {
@@ -9,7 +11,11 @@ module.exports = (reqQuery: any): any => {
     if (Object.keys(filters).length > 0) {
       query.where = {};
       for (const [key, value] of Object.entries(filters)) {
-        Object.assign(query.where, { [key]: value });
+        if (key === "title") {
+          Object.assign(query.where, {
+            [key]: { [Op.like]: "%" + value + "%" },
+          });
+        } else Object.assign(query.where, { [key]: value });
       }
     }
   }
